@@ -1,55 +1,35 @@
-class Vehicle{
-    String brand;
+class Animal{
+    String name;
 
-    public Vehicle(String brand){
-        this.brand = brand;
+    public Animal(String name){
+        this.name = name;
     }
 
-    public void display() {
-        System.out.println("Brand name: " + brand);
-    }
-}
-
-class Car extends Vehicle{
-    String model;
-
-    public Car(String brand, String model){
-        super(brand);
-        this.model = model;
-    }
-
-    public void display(){
-        System.out.printf("Brand name : %s, model name : %s\n", brand, model);
+    public void printName(){
+        System.out.println("이름 : " + name);
     }
 }
 
-class Car2 extends Car{
-    public Car2(String model){
-        super("BMW", model);
-    }
-}
+class Dog extends Animal{
+    String breed;
 
-class Motorcycle extends Vehicle{
-    String model;
-
-    public Motorcycle(String brand, String model){
-        super(brand);
-        this.model = model;
+    public Dog(String name, String breed){
+        super(name);
+        this.breed = breed;
     }
 
-    public void display(){
-        System.out.printf("Brand name : %s, model name : %s\n", brand, model);
+    @Override
+    public void printName(){
+        System.out.printf("이름 : %s, 종 : %s", name, breed);
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        Vehicle car = new Car("Hyundai", "genesis");
-        Motorcycle moto = new Motorcycle("Yamaha", "R3");
-        Car car2 = new Car2( "3");
+        Animal animal = new Animal("삐삐");
+        Animal dog = new Dog("마루쉐", "그레이 하운드");
 
-        car.display();
-        moto.display();
-        car2.display();
+        animal.printName();
+        dog.printName();
     }
 }
