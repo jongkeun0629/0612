@@ -1,35 +1,51 @@
-class Animal{
-    String name;
-
-    public Animal(String name){
-        this.name = name;
-    }
-
-    public void printName(){
-        System.out.println("이름 : " + name);
-    }
-}
-
-class Dog extends Animal{
-    String breed;
-
-    public Dog(String name, String breed){
-        super(name);
-        this.breed = breed;
-    }
-
-    @Override
-    public void printName(){
-        System.out.printf("이름 : %s, 종 : %s", name, breed);
-    }
-}
-
 public class Main {
     public static void main(String[] args) {
-        Animal animal = new Animal("삐삐");
-        Animal dog = new Dog("마루쉐", "그레이 하운드");
+        final int R = 3;    // 둘 다 협력
+        final int T = 5;    // 나는 배신, 상대방 협력
+        final int P = 1;    // 나는 배신, 상대방 배신
+        final int S = 0;    // 나는 협력, 상대방 배신
 
-        animal.printName();
-        dog.printName();
+        int rounds = 10;
+
+        Player playerA = new Seven(rounds);
+        Player playerB = new B();
+
+        int totalA = 0;
+        int totalB = 0;
+
+        for (int round = 1; round <= rounds; round++){
+            boolean choiceA = playerA.cooperate(round);
+            boolean choiceB = playerB.cooperate(round);
+
+            if (choiceA && choiceB){
+                totalA += R;
+                totalB += R;
+            } else if (choiceA && !choiceB){
+                totalA += S;
+                totalB += T;
+            } else if (!choiceA && choiceB){
+                totalA += T;
+                totalB += S;
+            } else {
+                totalA += P;
+                totalB += P;
+            }
+
+            playerA.recordOpponentMove(choiceB);
+            playerA.rom(choiceA);   // 결과 셀프 기록
+            playerB.recordOpponentMove(choiceA);
+
+            System.out.printf(
+                    "Round %2d: A=%s, B=%s → 점수 A=%d, B=%d\n",
+                    round,
+                    choiceA ? "협력" : "배신",
+                    choiceB ? "협력" : "배신",
+                    totalA, totalB
+            );
+        }
+
+        System.out.println("===== 최종 결과 =====");
+        System.out.printf("Player A: %d%nPlayer B: %d%n", totalA, totalB);
+        playerA.print();    // 기록한 결과 출력
     }
 }
